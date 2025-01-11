@@ -1,0 +1,65 @@
+// 主题色
+$primary-color: #409eff;
+$success-color: #67c23a;
+$warning-color: #e6a23c;
+$danger-color: #f56c6c;
+$info-color: #909399;
+
+// 文字颜色
+$text-primary: #303133;
+$text-regular: #606266;
+$text-secondary: #909399;
+$text-placeholder: #c0c4cc;
+
+// 边框颜色
+$border-color-base: #dcdfe6;
+$border-color-light: #e4e7ed;
+$border-color-lighter: #ebeef5;
+$border-color-extra-light: #f2f6fc;
+
+// 背景颜色
+$background-color-base: #f5f7fa;
+$background-color-light: #f5f7fa;
+
+// 布局
+$header-height: 60px;
+$sidebar-width: 200px;
+$sidebar-collapsed-width: 64px;
+
+// 断点
+$sm: 768px;
+$md: 992px;
+$lg: 1200px;
+$xl: 1920px;
+
+// 间距
+$spacing-mini: 4px;
+$spacing-small: 8px;
+$spacing-base: 16px;
+$spacing-large: 24px;
+$spacing-huge: 32px;
+
+// 圆角
+$border-radius-small: 2px;
+$border-radius-base: 4px;
+$border-radius-large: 8px;
+$border-radius-circle: 50%;
+
+// 阴影
+$box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+$box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+$box-shadow-dark: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.12);
+
+// 过渡
+$transition-duration: 0.3s;
+$transition-base: all $transition-duration ease-in-out;
+
+// z-index
+$z-index-normal: 1;
+$z-index-dropdown: 1000;
+$z-index-sticky: 1020;
+$z-index-fixed: 1030;
+$z-index-modal-backdrop: 1040;
+$z-index-modal: 1050;
+$z-index-popover: 1060;
+$z-index-tooltip: 1070; 

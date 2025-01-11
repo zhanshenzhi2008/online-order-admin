@@ -1,0 +1,226 @@
+@use 'variables' as *;
+
+// Button
+.el-button {
+  &--primary {
+    --el-button-bg-color: #{$primary-color};
+    --el-button-border-color: #{$primary-color};
+    --el-button-hover-bg-color: #{mix(#fff, $primary-color, 20%)};
+    --el-button-hover-border-color: #{mix(#fff, $primary-color, 20%)};
+    --el-button-active-bg-color: #{mix(#000, $primary-color, 10%)};
+    --el-button-active-border-color: #{mix(#000, $primary-color, 10%)};
+  }
+
+  &--success {
+    --el-button-bg-color: #{$success-color};
+    --el-button-border-color: #{$success-color};
+    --el-button-hover-bg-color: #{mix(#fff, $success-color, 20%)};
+    --el-button-hover-border-color: #{mix(#fff, $success-color, 20%)};
+    --el-button-active-bg-color: #{mix(#000, $success-color, 10%)};
+    --el-button-active-border-color: #{mix(#000, $success-color, 10%)};
+  }
+
+  &--warning {
+    --el-button-bg-color: #{$warning-color};
+    --el-button-border-color: #{$warning-color};
+    --el-button-hover-bg-color: #{mix(#fff, $warning-color, 20%)};
+    --el-button-hover-border-color: #{mix(#fff, $warning-color, 20%)};
+    --el-button-active-bg-color: #{mix(#000, $warning-color, 10%)};
+    --el-button-active-border-color: #{mix(#000, $warning-color, 10%)};
+  }
+
+  &--danger {
+    --el-button-bg-color: #{$danger-color};
+    --el-button-border-color: #{$danger-color};
+    --el-button-hover-bg-color: #{mix(#fff, $danger-color, 20%)};
+    --el-button-hover-border-color: #{mix(#fff, $danger-color, 20%)};
+    --el-button-active-bg-color: #{mix(#000, $danger-color, 10%)};
+    --el-button-active-border-color: #{mix(#000, $danger-color, 10%)};
+  }
+
+  &--info {
+    --el-button-bg-color: #{$info-color};
+    --el-button-border-color: #{$info-color};
+    --el-button-hover-bg-color: #{mix(#fff, $info-color, 20%)};
+    --el-button-hover-border-color: #{mix(#fff, $info-color, 20%)};
+    --el-button-active-bg-color: #{mix(#000, $info-color, 10%)};
+    --el-button-active-border-color: #{mix(#000, $info-color, 10%)};
+  }
+}
+
+// Input
+.el-input {
+  --el-input-border-color: #{$border-color-base};
+  --el-input-hover-border-color: #{$border-color-light};
+  --el-input-focus-border-color: #{$primary-color};
+  
+  .el-input__wrapper {
+    box-shadow: 0 0 0 1px var(--el-input-border-color) inset;
+    
+    &:hover {
+      box-shadow: 0 0 0 1px var(--el-input-hover-border-color) inset;
+    }
+    
+    &.is-focus {
+      box-shadow: 0 0 0 1px var(--el-input-focus-border-color) inset;
+    }
+  }
+}
+
+// Select
+.el-select {
+  .el-input {
+    &.is-focus {
+      .el-input__wrapper {
+        box-shadow: 0 0 0 1px var(--el-input-focus-border-color) inset;
+      }
+    }
+  }
+}
+
+// Radio
+.el-radio {
+  --el-radio-checked-text-color: #{$primary-color};
+  --el-radio-checked-bg-color: #{$primary-color};
+  --el-radio-checked-border-color: #{$primary-color};
+}
+
+// Checkbox
+.el-checkbox {
+  --el-checkbox-checked-text-color: #{$primary-color};
+  --el-checkbox-checked-bg-color: #{$primary-color};
+  --el-checkbox-checked-border-color: #{$primary-color};
+}
+
+// Switch
+.el-switch {
+  --el-switch-on-color: #{$primary-color};
+}
+
+// Slider
+.el-slider {
+  --el-slider-main-bg-color: #{$primary-color};
+}
+
+// Progress
+.el-progress {
+  --el-progress-color: #{$primary-color};
+}
+
+// Tag
+.el-tag {
+  &--primary {
+    --el-tag-bg-color: #{mix(#fff, $primary-color, 90%)};
+    --el-tag-border-color: #{mix(#fff, $primary-color, 80%)};
+    --el-tag-text-color: #{$primary-color};
+  }
+
+  &--success {
+    --el-tag-bg-color: #{mix(#fff, $success-color, 90%)};
+    --el-tag-border-color: #{mix(#fff, $success-color, 80%)};
+    --el-tag-text-color: #{$success-color};
+  }
+
+  &--warning {
+    --el-tag-bg-color: #{mix(#fff, $warning-color, 90%)};
+    --el-tag-border-color: #{mix(#fff, $warning-color, 80%)};
+    --el-tag-text-color: #{$warning-color};
+  }
+
+  &--danger {
+    --el-tag-bg-color: #{mix(#fff, $danger-color, 90%)};
+    --el-tag-border-color: #{mix(#fff, $danger-color, 80%)};
+    --el-tag-text-color: #{$danger-color};
+  }
+
+  &--info {
+    --el-tag-bg-color: #{mix(#fff, $info-color, 90%)};
+    --el-tag-border-color: #{mix(#fff, $info-color, 80%)};
+    --el-tag-text-color: #{$info-color};
+  }
+}
+
+// Message
+.el-message {
+  --el-message-bg-color: #{$background-color-base};
+  --el-message-border-color: #{$border-color-light};
+  --el-message-padding: #{$spacing-base} #{$spacing-large};
+  border-width: 1px;
+  box-shadow: #{$box-shadow-light};
+
+  &--success {
+    --el-message-text-color: #{$success-color};
+    border-color: #{mix(#fff, $success-color, 80%)};
+  }
+
+  &--warning {
+    --el-message-text-color: #{$warning-color};
+    border-color: #{mix(#fff, $warning-color, 80%)};
+  }
+
+  &--error {
+    --el-message-text-color: #{$danger-color};
+    border-color: #{mix(#fff, $danger-color, 80%)};
+  }
+
+  &--info {
+    --el-message-text-color: #{$info-color};
+    border-color: #{mix(#fff, $info-color, 80%)};
+  }
+}
+
+// Notification
+.el-notification {
+  --el-notification-width: 330px;
+  --el-notification-padding: #{$spacing-base} #{$spacing-large};
+  --el-notification-border-color: #{$border-color-light};
+  border-width: 1px;
+  box-shadow: #{$box-shadow-light};
+}
+
+// Menu
+.el-menu {
+  --el-menu-bg-color: transparent;
+  --el-menu-hover-bg-color: #{mix(#fff, $primary-color, 90%)};
+  --el-menu-active-color: #{$primary-color};
+  
+  .el-menu-item {
+    &.is-active {
+      background-color: var(--el-menu-hover-bg-color);
+    }
+  }
+}
+
+// Tabs
+.el-tabs {
+  --el-tabs-header-height: 40px;
+  
+  .el-tabs__nav-wrap::after {
+    height: 1px;
+  }
+  
+  .el-tabs__active-bar {
+    height: 2px;
+  }
+}
+
+// Pagination
+.el-pagination {
+  --el-pagination-button-height: 32px;
+  --el-pagination-button-bg-color: #{$background-color-base};
+  
+  .btn-prev,
+  .btn-next {
+    border: 1px solid $border-color-base;
+    border-radius: $border-radius-base;
+  }
+  
+  .el-pager li {
+    border: 1px solid $border-color-base;
+    border-radius: $border-radius-base;
+    
+    &.is-active {
+      border-color: $primary-color;
+    }
+  }
+} 

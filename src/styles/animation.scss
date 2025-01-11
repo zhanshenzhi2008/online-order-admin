@@ -1,0 +1,239 @@
+@use 'variables' as *;
+
+// Fade
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity $transition-duration ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// Fade transform
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all $transition-duration;
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+// Slide fade
+.slide-fade-enter-active {
+  transition: all $transition-duration ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all $transition-duration cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+// Bounce
+.bounce-enter-active {
+  animation: bounce-in $transition-duration;
+}
+
+.bounce-leave-active {
+  animation: bounce-in $transition-duration reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Scale
+.scale-enter-active,
+.scale-leave-active {
+  transition: all $transition-duration ease;
+}
+
+.scale-enter-from,
+.scale-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+// Slide up
+.slide-up-enter-active {
+  transition: all $transition-duration ease-out;
+}
+
+.slide-up-leave-active {
+  transition: all $transition-duration ease-in;
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+// Slide down
+.slide-down-enter-active {
+  transition: all $transition-duration ease-out;
+}
+
+.slide-down-leave-active {
+  transition: all $transition-duration ease-in;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+// Slide left
+.slide-left-enter-active {
+  transition: all $transition-duration ease-out;
+}
+
+.slide-left-leave-active {
+  transition: all $transition-duration ease-in;
+}
+
+.slide-left-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.slide-left-leave-to {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+// Slide right
+.slide-right-enter-active {
+  transition: all $transition-duration ease-out;
+}
+
+.slide-right-leave-active {
+  transition: all $transition-duration ease-in;
+}
+
+.slide-right-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.slide-right-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+// Rotate
+.rotate-enter-active,
+.rotate-leave-active {
+  transition: all $transition-duration ease;
+}
+
+.rotate-enter-from,
+.rotate-leave-to {
+  opacity: 0;
+  transform: rotate3d(0, 1, 0, 90deg);
+}
+
+// Flip
+.flip-enter-active {
+  animation: flip-in $transition-duration ease-out;
+}
+
+.flip-leave-active {
+  animation: flip-out $transition-duration ease-in;
+}
+
+@keyframes flip-in {
+  0% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+  40% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    animation-timing-function: ease-in;
+  }
+  60% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
+    opacity: 1;
+  }
+  80% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
+  }
+  100% {
+    transform: perspective(400px);
+  }
+}
+
+@keyframes flip-out {
+  0% {
+    transform: perspective(400px);
+  }
+  30% {
+    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
+    opacity: 0;
+  }
+}
+
+// Zoom
+.zoom-enter-active,
+.zoom-leave-active {
+  animation-duration: $transition-duration;
+  animation-fill-mode: both;
+}
+
+.zoom-enter-active {
+  animation-name: zoom-in;
+}
+
+.zoom-leave-active {
+  animation-name: zoom-out;
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-out {
+  from {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  to {
+    opacity: 0;
+  }
+} 
