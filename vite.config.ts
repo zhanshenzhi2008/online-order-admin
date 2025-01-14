@@ -1,9 +1,13 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+// Get the current directory name
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const { VITE_API_BASE_URL, VITE_USE_PROXY, VITE_PROXY_PATH } = env
 
@@ -22,8 +26,8 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     server: {
-      host: true,
-      port: 3000,
+      host: 'localhost',
+      port: 3100,
       open: true,
       cors: true,
       proxy: VITE_USE_PROXY === 'true' ? {
