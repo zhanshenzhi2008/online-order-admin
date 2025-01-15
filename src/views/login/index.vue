@@ -121,6 +121,18 @@ const handleLogin = async () => {
   
   .login-card {
     width: 400px;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    
+    :deep(.el-card__header) {
+      padding: 20px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    
+    :deep(.el-card__body) {
+      padding: 30px;
+    }
     
     .card-header {
       text-align: center;
@@ -132,6 +144,14 @@ const handleLogin = async () => {
       }
     }
     
+    .el-form-item {
+      margin-bottom: 25px;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    
     .tips {
       margin-top: 20px;
       color: #909399;
@@ -139,6 +159,7 @@ const handleLogin = async () => {
       
       p {
         margin: 5px 0;
+        font-size: 14px;
       }
     }
   }

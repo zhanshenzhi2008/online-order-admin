@@ -43,4 +43,38 @@ export const isAuthenticated = (): boolean => {
 export const logout = (): void => {
   removeToken()
   removeUser()
+}
+
+// 登录
+export const login = async (username: string, password: string): Promise<void> => {
+  // 模拟登录请求
+  if (username === 'admin' && password === '123456') {
+    // 设置 token
+    setToken('admin-token')
+    
+    // 设置用户信息
+    setUser({
+      id: 1,
+      username: 'admin',
+      nickname: '管理员',
+      avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      roles: ['admin'],
+      permissions: ['*']
+    })
+  } else if (username === 'test' && password === '123456') {
+    // 设置 token
+    setToken('test-token')
+    
+    // 设置用户信息
+    setUser({
+      id: 2,
+      username: 'test',
+      nickname: '测试用户',
+      avatar: 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png',
+      roles: ['test'],
+      permissions: ['view']
+    })
+  } else {
+    throw new Error('用户名或密码错误')
+  }
 } 
