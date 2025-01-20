@@ -99,10 +99,7 @@ export function deleteRole(id: string) {
 
 // 权限相关
 export function getPermissionList() {
-  return request<Permission[]>({
-    url: '/permission/list',
-    method: 'get'
-  })
+  return request.get<Permission[]>('/permission/list')
 }
 
 export function createPermission(data: Partial<Permission>) {

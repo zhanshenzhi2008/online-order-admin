@@ -1,21 +1,20 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+import type { InternalAxiosRequestConfig, AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
-import { getToken } from '@/utils/auth'
-import type { ApiResponse } from '@/types/common'
+import router from '@/router'
 
-// 创建axios实例
-const service: AxiosInstance = axios.create({
+// 创建 axios 实例
+const service = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
-  timeout: 10000
+  timeout: 15000
 })
 
 // 请求拦截器
 service.interceptors.request.use(
-  (config) => {
-    // 添加token
-    const token = getToken()
-    if (token && config.headers) {
+  (config: InternalAxiosRequestConfig) => {
+    // 从 localStorage 获取 token
+    const token = localStorage.getItem('token')
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
@@ -27,100 +26,42 @@ service.interceptors.request.use(
 
 // 响应拦截器
 service.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse>) => {
+  (response: AxiosResponse) => {
     const { code, message, data } = response.data
 
-    // 如果是blob类型，直接返回
-    if (response.config.responseType === 'blob') {
+    // 如果没有 code，说明是直接返回的数据
+    if (code === undefined) {
       return response.data
     }
 
-    // 处理业务状态码
-    if (code === 0) {
-      return data
+    // 根据自定义错误码处理错误
+    switch (code) {
+      case 0:
+        return data
+      case 401:
+        // token 过期或未登录
+        localStorage.removeItem('token')
+        router.push('/login')
+        ElMessage.error(message || '请重新登录')
+        return Promise.reject(new Error(message || '请重新登录'))
+      default:
+        ElMessage.error(message || '请求失败')
+        return Promise.reject(new Error(message || '请求失败'))
     }
-
-    // 显示错误消息
-    ElMessage.error(message || '系统错误')
-    return Promise.reject(new Error(message || '系统错误'))
   },
   (error) => {
-    // 处理HTTP错误
-    let message = ''
-    if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          message = '未授权，请重新登录'
-          // TODO: 跳转到登录页
-          break
-        case 403:
-          message = '拒绝访问'
-          break
-        case 404:
-          message = '请求错误，未找到该资源'
-          break
-        case 500:
-          message = '服务器错误'
-          break
-        default:
-          message = '网络错误'
-      }
-    } else {
-      message = error.message
+    let message = error.message
+    if (error.response?.data?.message) {
+      message = error.response.data.message
     }
-
     ElMessage.error(message)
     return Promise.reject(error)
   }
 )
 
-// 封装GET请求
-const get = <T = any>(
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  return service.get(url, config)
+// 封装请求方法
+const request = <T = any>(config: InternalAxiosRequestConfig): Promise<T> => {
+  return service(config) as Promise<T>
 }
 
-// 封装POST请求
-const post = <T = any>(
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  return service.post(url, data, config)
-}
-
-// 封装PUT请求
-const put = <T = any>(
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  return service.put(url, data, config)
-}
-
-// 封装DELETE请求
-const del = <T = any>(
-  url: string,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  return service.delete(url, config)
-}
-
-// 封装PATCH请求
-const patch = <T = any>(
-  url: string,
-  data?: any,
-  config?: AxiosRequestConfig
-): Promise<T> => {
-  return service.patch(url, data, config)
-}
-
-export default {
-  get,
-  post,
-  put,
-  delete: del,
-  patch
-} 
+export default request 

@@ -8,6 +8,7 @@ interface ImportMetaEnv {
   readonly VITE_USE_MOCK: boolean
   readonly VITE_USE_PROXY: boolean
   readonly VITE_PROXY_PATH: string
+  readonly VITE_API_URL: string
 }
 
 interface ImportMeta {

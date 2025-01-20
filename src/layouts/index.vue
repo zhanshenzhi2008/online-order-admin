@@ -3,71 +3,84 @@
     <!-- 侧边栏 -->
     <div class="sidebar-container">
       <div class="logo-container">
-        <el-image
-          class="logo"
-          src="https://element-plus.org/images/element-plus-logo.svg"
-          fit="contain"
-        />
-        <h1 class="title">后台管理系统</h1>
+        <img src="@/assets/logo.png" class="logo" alt="logo">
+        <h1 class="title" v-show="!isCollapse">后台管理系统</h1>
       </div>
       
       <el-menu
         :default-active="route.path"
         :collapse="isCollapse"
+        :unique-opened="true"
+        router
         background-color="#304156"
         text-color="#bfcbd9"
-        active-text-color="#409eff"
-        router
+        active-text-color="#409EFF"
       >
-        <!-- 遍历路由生成菜单 -->
         <template v-for="route in routes" :key="route.path">
-          <sidebar-item :item="route" :base-path="route.path" />
+          <el-sub-menu v-if="route.children && route.children.length > 0" :index="route.path">
+            <template #title>
+              <el-icon v-if="route.meta?.icon">
+                <component :is="getIcon(route.meta.icon)" />
+              </el-icon>
+              <span>{{ route.meta?.title }}</span>
+            </template>
+            
+            <el-menu-item 
+              v-for="child in route.children"
+              :key="child.path"
+              :index="`${route.path}/${child.path}`"
+            >
+              <el-icon v-if="child.meta?.icon">
+                <component :is="getIcon(child.meta.icon)" />
+              </el-icon>
+              <template #title>{{ child.meta?.title }}</template>
+            </el-menu-item>
+          </el-sub-menu>
+          
+          <el-menu-item v-else :index="route.path">
+            <el-icon v-if="route.meta?.icon">
+              <component :is="getIcon(route.meta.icon)" />
+            </el-icon>
+            <template #title>{{ route.meta?.title }}</template>
+          </el-menu-item>
         </template>
       </el-menu>
     </div>
     
     <!-- 主容器 -->
-    <div class="main-container">
-      <!-- 顶部导航栏 -->
+    <div class="main-container" :class="{ 'is-collapse': isCollapse }">
       <div class="navbar">
         <div class="left">
-          <el-icon
-            class="fold-btn"
-            @click="toggleSidebar"
-          >
-            <component :is="isCollapse ? Expand : Fold" />
+          <el-icon class="hamburger" @click="toggleSidebar">
+            <component :is="isCollapse ? 'Expand' : 'Fold'" />
           </el-icon>
           <breadcrumb />
         </div>
         
-        <div class="right">
-          <el-dropdown trigger="click">
-            <div class="avatar-container">
-              <el-avatar
-                :size="32"
-                :src="userInfo.avatar"
-              />
-              <span class="name">{{ userInfo.nickname }}</span>
-              <el-icon class="el-icon--right">
-                <i class="el-icon-arrow-down" />
-              </el-icon>
-            </div>
-            
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item @click="handleLogout">
-                  <el-icon><SwitchButton /></el-icon>
-                  退出登录
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
+        <el-dropdown trigger="click">
+          <div class="right-menu">
+            <img :src="userInfo.avatar || '@/assets/avatar.png'" class="avatar">
+            <span class="name">{{ userInfo.nickname }}</span>
+            <el-icon class="el-icon--right">
+              <arrow-down />
+            </el-icon>
+          </div>
+          
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="handleLogout">
+                <el-icon><switch-button /></el-icon>
+                退出登录
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
       
-      <!-- 主要内容区 -->
       <div class="app-main">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <component :is="Component" />
+        </router-view>
       </div>
     </div>
   </div>
@@ -82,11 +95,18 @@ import {
   House,
   Setting,
   User,
+  UserFilled,
   Lock,
   Tools,
+  ShoppingBag,
+  Menu,
+  List,
+  Box,
+  Money,
   Expand,
   Fold,
-  SwitchButton
+  SwitchButton,
+  ArrowDown
 } from '@element-plus/icons-vue'
 import { logout, getUser } from '@/utils/auth'
 import type { UserInfo } from '@/types/user'
@@ -101,8 +121,14 @@ const iconMap = {
   House,
   Setting,
   User,
+  UserFilled,
   Lock,
-  Tools
+  Tools,
+  ShoppingBag,
+  Menu,
+  List,
+  Box,
+  Money
 }
 
 // 侧边栏折叠状态
@@ -150,18 +176,22 @@ const handleLogout = () => {
 .app-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   
   .sidebar-container {
     position: fixed;
     top: 0;
     left: 0;
-    bottom: 0;
-    width: 210px;
+    width: 220px;
+    height: 100vh;
     background-color: #304156;
     transition: width 0.3s;
     z-index: 1001;
-    overflow: hidden;
+    overflow-y: auto;
+    
+    &.is-collapse {
+      width: 64px;
+    }
     
     .logo-container {
       height: 50px;
@@ -177,7 +207,6 @@ const handleLogout = () => {
       }
       
       .title {
-        margin: 0;
         color: #fff;
         font-size: 16px;
         font-weight: 600;
@@ -185,78 +214,74 @@ const handleLogout = () => {
         overflow: hidden;
       }
     }
-    
+
     .el-menu {
       border: none;
+      background-color: transparent;
     }
   }
   
   .main-container {
     position: relative;
-    margin-left: 210px;
     min-height: 100%;
-    background: #f0f2f5;
     transition: margin-left 0.3s;
+    
+    &.is-collapse {
+    }
     
     .navbar {
       height: 50px;
-      padding: 0 15px;
+      background: #fff;
+      box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: #fff;
-      box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+      padding: 0 15px;
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 220px;
+      z-index: 1000;
+      transition: left 0.3s;
       
-      .left {
+      &.is-collapse {
+        left: 64px;
+      }
+      
+      .hamburger {
+        cursor: pointer;
+        font-size: 20px;
+      }
+      
+      .right-menu {
         display: flex;
         align-items: center;
         
-        .fold-btn {
-          padding: 0 15px;
-          cursor: pointer;
-          font-size: 16px;
-          
-          &:hover {
-            background: rgba(0, 0, 0, 0.025);
-          }
+        .avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 10px;
+          margin-right: 10px;
         }
-      }
-      
-      .right {
-        .avatar-container {
-          display: flex;
-          align-items: center;
-          padding: 0 8px;
-          cursor: pointer;
-          
-          &:hover {
-            background: rgba(0, 0, 0, 0.025);
-          }
-          
-          .name {
-            margin: 0 8px;
-            font-size: 14px;
-          }
+        
+        .name {
+          margin-right: 10px;
+          font-size: 14px;
         }
       }
     }
     
     .app-main {
-      padding: 15px;
-    }
-  }
-  
-  &.is-collapse {
-    .sidebar-container {
-      width: 54px;
-      
-      .title {
-        display: none;
+      margin-left: 220px;
+      padding: 70px 20px 20px 20px;
+      min-height: calc(100vh - 50px);
+      box-sizing: border-box;
+      background-color: #f0f2f5;
+      transition: margin-left 0.3s;
+
+      .is-collapse & {
+        margin-left: 64px;
       }
-    }
-    
-    .main-container {
-      margin-left: 54px;
     }
   }
 }

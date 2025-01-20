@@ -1,8 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import type { RouteRecordRaw } from 'vue-router'
+import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router'
 import { isAuthenticated } from '@/utils/auth'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import orderRoutes, { orderDetailRoute } from './modules/order'
+import userRoutes, { userDetailRoute } from './modules/user'
+import reviewRoutes from './modules/review'
+import statisticsRoutes from './modules/statistics'
+import marketingRoutes from './modules/marketing'
 
 // 路由配置
 const routes: RouteRecordRaw[] = [
@@ -14,7 +19,6 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    name: 'Layout',
     component: () => import('@/layouts/index.vue'),
     redirect: '/dashboard',
     children: [
@@ -26,10 +30,17 @@ const routes: RouteRecordRaw[] = [
       }
     ]
   },
+  orderRoutes,
+  orderDetailRoute,
+  userRoutes,
+  userDetailRoute,
+  reviewRoutes,
+  statisticsRoutes,
+  marketingRoutes,
   {
     path: '/system',
-    name: 'System',
     component: () => import('@/layouts/index.vue'),
+    redirect: '/system/admin',
     meta: { title: '系统管理', icon: 'Setting' },
     children: [
       {
@@ -60,9 +71,9 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/goods',
-    name: 'Goods',
     component: () => import('@/layouts/index.vue'),
-    meta: { title: '商品管理', icon: 'Goods' },
+    redirect: '/goods/category',
+    meta: { title: '商品管理', icon: 'ShoppingBag' },
     children: [
       {
         path: 'category',
@@ -99,30 +110,36 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach((to, from, next) => {
-  // 开启进度条
-  NProgress.start()
+router.beforeEach(
+  (
+    to: RouteLocationNormalized,
+    from: RouteLocationNormalized,
+    next: NavigationGuardNext
+  ) => {
+    // 开启进度条
+    NProgress.start()
 
-  // 设置页面标题
-  document.title = `${to.meta.title || ''} - 后台管理系统`
+    // 设置页面标题
+    document.title = `${to.meta.title || ''} - 后台管理系统`
 
-  // 检查是否需要登录
-  if (to.path === '/login') {
-    if (isAuthenticated()) {
-      next('/')
-    } else {
-      next()
+    // 检查是否需要登录
+    if (to.path === '/login') {
+      if (isAuthenticated()) {
+        next('/')
+      } else {
+        next()
+      }
+      return
     }
-    return
-  }
 
-  if (!isAuthenticated()) {
-    next('/login')
-    return
-  }
+    if (!isAuthenticated()) {
+      next('/login')
+      return
+    }
 
-  next()
-})
+    next()
+  }
+)
 
 router.afterEach(() => {
   // 关闭进度条

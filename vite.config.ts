@@ -1,15 +1,12 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import { resolve, dirname } from 'path'
-import { fileURLToPath } from 'url'
-
-// Get the current directory name
-const __dirname = dirname(fileURLToPath(import.meta.url));
+import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   const { VITE_API_BASE_URL, VITE_USE_PROXY, VITE_PROXY_PATH } = env
+  const isDev = mode === 'development'
 
   return {
     plugins: [vue()],
@@ -43,12 +40,12 @@ export default defineConfig(({ mode }) => {
       outDir: 'dist',
       assetsDir: 'assets',
       cssCodeSplit: true,
-      sourcemap: false,
-      minify: 'terser',
+      sourcemap: true,
+      minify: isDev ? false : 'terser',
       terserOptions: {
         compress: {
           drop_console: env.VITE_DROP_CONSOLE === 'true',
-          drop_debugger: true,
+          drop_debugger: !isDev,
         },
       },
       rollupOptions: {
