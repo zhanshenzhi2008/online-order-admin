@@ -59,9 +59,26 @@ service.interceptors.response.use(
   }
 )
 
-// 封装请求方法
-const request = <T = any>(config: InternalAxiosRequestConfig): Promise<T> => {
+// 默认请求方法
+function request<T = any>(config: InternalAxiosRequestConfig): Promise<T> {
   return service(config) as Promise<T>
+}
+
+// HTTP 方法
+request.get = <T = any>(url: string, params?: any): Promise<T> => {
+  return service({ method: 'GET', url, params }) as Promise<T>
+}
+
+request.post = <T = any>(url: string, data?: any): Promise<T> => {
+  return service({ method: 'POST', url, data }) as Promise<T>
+}
+
+request.put = <T = any>(url: string, data?: any): Promise<T> => {
+  return service({ method: 'PUT', url, data }) as Promise<T>
+}
+
+request.delete = <T = any>(url: string, params?: any): Promise<T> => {
+  return service({ method: 'DELETE', url, params }) as Promise<T>
 }
 
 export default request 

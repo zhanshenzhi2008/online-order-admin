@@ -143,7 +143,7 @@
         </el-descriptions-item>
         <el-descriptions-item label="评分">
           <el-rate
-            v-model="currentReview?.rating"
+            :model-value="currentReview?.rating ?? 0"
             disabled
             show-score
             text-color="#ff9900"
