@@ -157,7 +157,7 @@ import {
   Edit
 } from '@element-plus/icons-vue'
 import type { FormInstance } from 'element-plus'
-import { formatDateTime } from '@/utils/format'
+import { formatDateTime } from '@/utils/rdmaoso'
 import {
   getGoodsList,
   updateGoodsPrice

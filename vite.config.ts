@@ -1,15 +1,24 @@
 import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from 'path'
+import { viteMockServe } from 'vite-plugin-mock'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd())
-  const { VITE_API_BASE_URL, VITE_USE_PROXY, VITE_PROXY_PATH } = env
+  const { VITE_API_BASE_URL, VITE_USE_PROXY, VITE_PROXY_PATH, VITE_USE_MOCK } = env
   const isDev = mode === 'development'
 
   return {
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      viteMockServe({
+        mockPath: 'src/mock',
+        enable: VITE_USE_MOCK === 'true',
+        watchFiles: true,
+        logger: true
+      })
+    ],
     resolve: {
       alias: {
         '@': resolve(__dirname, 'src'),
@@ -27,13 +36,13 @@ export default defineConfig(({ mode }) => {
       port: 3100,
       open: true,
       cors: true,
-      proxy: VITE_USE_PROXY === 'true' ? {
-        [VITE_PROXY_PATH]: {
-          target: VITE_API_BASE_URL,
+      proxy: {
+        '/api': {
+          target: VITE_USE_MOCK === 'true' ? 'http://localhost:3100' : VITE_API_BASE_URL,
           changeOrigin: true,
-          rewrite: (path) => path.replace(new RegExp(`^${VITE_PROXY_PATH}`), ''),
-        },
-      } : undefined,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        }
+      }
     },
     build: {
       target: 'es2015',

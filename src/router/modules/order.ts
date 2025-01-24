@@ -42,15 +42,6 @@ const orderRoutes: RouteRecordRaw = {
         title: '状态管理',
         icon: 'Setting'
       }
-    },
-    {
-      path: 'statistics',
-      name: 'OrderStatistics',
-      component: () => import('@/views/order/statistics.vue'),
-      meta: {
-        title: '订单统计',
-        icon: 'PieChart'
-      }
     }
   ]
 }

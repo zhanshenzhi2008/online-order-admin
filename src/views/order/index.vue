@@ -48,9 +48,14 @@
       <template #header>
         <div class="card-header">
           <span>订单列表</span>
-          <el-button type="primary" :icon="Download" @click="handleExport">
-            导出订单
-          </el-button>
+          <div class="header-buttons">
+            <el-button type="primary" :icon="PieChart" @click="goToStatistics">
+              订单统计
+            </el-button>
+            <el-button type="primary" :icon="Download" @click="handleExport">
+              导出订单
+            </el-button>
+          </div>
         </div>
       </template>
 
@@ -115,7 +120,7 @@ import { getOrderList, exportOrders } from '@/api/order'
 import type { Order, OrderStatus } from '@/types/order'
 import OrderStatusManager from '@/components/OrderStatusManager.vue'
 
-const { Search, Refresh, View, Download } = ElementPlusIconsVue
+const { Search, Refresh, View, Download, PieChart } = ElementPlusIconsVue
 
 const router = useRouter()
 
@@ -240,6 +245,11 @@ const handleExport = async () => {
   }
 }
 
+// 跳转到订单统计页面
+const goToStatistics = () => {
+  router.push('/statistics/orders')
+}
+
 // 初始化
 loadData()
 </script>
@@ -257,6 +267,11 @@ loadData()
       display: flex;
       justify-content: space-between;
       align-items: center;
+      
+      .header-buttons {
+        display: flex;
+        gap: 10px;
+      }
     }
   }
   
